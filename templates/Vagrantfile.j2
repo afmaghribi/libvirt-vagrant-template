@@ -1,4 +1,5 @@
-Vagrant.configure("2") do |config| 
+Vagrant.configure("2") do |config|
+    config.vm.synced_folder '.', '/vagrant', disabled: true 
     {% for vm_name in vm_specs %}config.vm.define "{{ vm_name.hostname }}" do |controller|
         controller.ssh.username = "ubuntu"
         controller.ssh.private_key_path = "{{ vm_name.priv_key }}"
