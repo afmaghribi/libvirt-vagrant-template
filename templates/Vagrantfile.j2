@@ -5,12 +5,12 @@ Vagrant.configure("2") do |config|
         controller.ssh.private_key_path = "{{ vm_name.priv_key }}"
         controller.vm.box = "{{ vm_name.box }}"
         controller.vm.hostname = "{{ vm_name.hostname }}"
-        controller.vm.network "private_network",
+        {% for interface in vm_name.networks %}controller.vm.network "private_network",
             type: "dhcp",
-            libvirt__network_name: "{{ vm_name.network }}-network",
+            libvirt__network_name: "{{ interface.name }}-network",
             libvirt__forward_mode: "nat",
-            ip: "{{ vm_name.ip }}"
-        controller.vm.provider "libvirt" do |vm|
+            ip: "{{ interface.ip }}"
+        {% endfor %}controller.vm.provider "libvirt" do |vm|
             vm.title = "{{ vm_name.hostname }}"
             vm.memory = {{ vm_name.memory }}
             vm.cpus = {{ vm_name.vcpu }}
