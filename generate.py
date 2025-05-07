@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os, yaml
 from jinja2 import Environment,FileSystemLoader
-from crypt import crypt,mksalt,METHOD_SHA512
+from bcrypt import hashpw,gensalt
 
 def render_network(specs):
     template_file = Environment(loader=FileSystemLoader("./templates")).get_template("network-config.j2")
@@ -21,7 +21,7 @@ def render_cloud_init(specs):
     template_file = Environment(loader=FileSystemLoader("./templates")).get_template("user-data.j2")
     
     for vms in (specs['vm_specs']):
-        vms['hashed_password']= crypt(vms['password'], mksalt(METHOD_SHA512))
+        vms['hashed_password'] = hashpw(vms['password'].encode(), gensalt()).decode()
 
         if "pub_key" not in specs.keys():
             key_path = os.path.expanduser('~/.ssh/id_rsa.pub')
