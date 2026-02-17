@@ -94,8 +94,10 @@ sudo nano /etc/libvirt/qemu.conf
 ---
 user = "$USER"
 group = "$USER"
-sudo systemctl restart libvirtd
 sudo usermod -a -G libvirt $(whoami)
+sudo usermod -a -G kvm $(whoami)
+sudo usermod -a -G $(whoami) libvirt-qemu
+sudo systemctl restart libvirtd
 vagrant up
 ```
 
