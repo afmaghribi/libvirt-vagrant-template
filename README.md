@@ -28,6 +28,7 @@ Basically purpose of the script is to generate ready to use `Vagrantfile` to pro
 3. Install vagrant libvirt plugin
 
 ```
+sudo apt install ruby-dev make build-essential libvirt-dev
 vagrant plugin install vagrant-libvirt
 ```
 
@@ -89,6 +90,12 @@ python3 generate.py
 3. Provision the virtual machines
 
 ```
+sudo nano /etc/libvirt/qemu.conf
+---
+user = "$USER"
+group = "$USER"
+sudo systemctl restart libvirtd
+sudo usermod -a -G libvirt $(whoami)
 vagrant up
 ```
 
